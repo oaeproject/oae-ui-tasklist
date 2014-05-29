@@ -1,10 +1,39 @@
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="css/tasklist.css" />
 
-<div id="tasklist-container"><!-- --></div>
+<div id="tasklist-container">
+    <div id="tasklist-header-container"><!-- --></div>
 
-<div id="tasklist-template"><!--
+    <div id="tasklist-tasks-container"><!-- --></div>
 
+    <form id="tasklist-task-form" role="form">
+        <div class="form-group">
+            <label for="tasklist-task-displayname">__MSG__TASK_TITLE__</label>
+            <input type="text" name="displayName" class="form-control" id="tasklist-task-displayname" placeholder="__MSG__ENTER_A_TASK_TITLE__">
+        </div>
+
+        <div class="form-group">
+            <label for="tasklist-task-description">__MSG__TASK_DESCRIPTION__</label>
+            <textarea name="description" class="form-control" id="tasklist-task-description" placeholder="__MSG__ENTER_A_TASK_DESCRIPTION__"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-default">__MSG__CREATE_TASK__</button>
+    </form>
+</div>
+
+<div id="tasklist-header-template"><!--
+    ${listHeader('__MSG__TASKLIST__', false, false, false)}
+--></div>
+
+<div id="tasklist-tasks-template"><!--
+    {for task in tasks}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title oae-threedots">${task.displayName|encodeForHTML}</h3>
+            </div>
+            <div class="panel-body">${task.description|encodeForHTML}</div>
+        </div>
+    {/for}
 --></div>
 
 <!-- JAVASCRIPT -->
