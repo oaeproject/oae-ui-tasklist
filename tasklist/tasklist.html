@@ -29,7 +29,12 @@
     {for task in tasks}
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title oae-threedots">${task.displayName|encodeForHTML}</h3>
+                <button type="button" class="btn btn-danger pull-right tasklist-task-delete" data-created="${task.created}">
+                    {var displayName = oae.api.util.security().encodeForHTML(task.displayName)}
+                    <span class="sr-only">__MSG__DELETE_TASK_NAME__</span>
+                    <i class="icon-trash"></i>
+                </button>
+                <h3 class="panel-title oae-threedots">${displayName}</h3>
             </div>
             <div class="panel-body">${task.description|encodeForHTML}</div>
         </div>

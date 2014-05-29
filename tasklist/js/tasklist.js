@@ -21,6 +21,37 @@ define(['jquery', 'oae.core'], function($, oae) {
         var $rootel = $('#' + uid);
 
         /**
+         * Delete a task
+         */
+        var deleteTask = function() {
+            // Get the `created` timestamp we stored in a data attribute on the
+            // button. Hilary needs it to know which task to delete
+            var taskCreated = $(this).attr('data-created');
+
+            $.ajax({
+                'url': '/api/tasklist/' + taskCreated,
+                'type': 'DELETE',
+                'success': function(data) {
+                    // Show a success notification when the task has been deleted
+                    oae.api.util.notification(
+                        oae.api.i18n.translate('__MSG__TASK_DELETED__', 'tasklist'),
+                        oae.api.i18n.translate('__MSG__TASK_DELETE_SUCCESS__', 'tasklist')
+                    );
+                    // Retrieve the new list of tasks
+                    getTasks();
+                },
+                'error': function() {
+                    // Show a failure notification when the task couldn't be deleted
+                    oae.api.util.notification(
+                        oae.api.i18n.translate('__MSG__TASK_NOT_DELETED__', 'tasklist'),
+                        oae.api.i18n.translate('__MSG__TASK_DELETE_FAILED__', 'tasklist'),
+                        'error'
+                    );
+                }
+            });
+        };
+
+        /**
          * Create a new task
          */
         var createTask = function() {
@@ -29,14 +60,18 @@ define(['jquery', 'oae.core'], function($, oae) {
                 'type': 'POST',
                 'data': $('#tasklist-task-form', $rootel).serialize(),
                 'success': function(data) {
+                    // Show a success notification when the task has been created
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__TASK_CREATED__', 'tasklist'),
                         oae.api.i18n.translate('__MSG__TASK_CREATE_SUCCESS__', 'tasklist')
                     );
+                    // Retrieve the new list of tasks
                     getTasks();
+                    // Reset the task form
                     $('#tasklist-task-form', $rootel)[0].reset();
                 },
                 'error': function() {
+                    // Show a failure notification when the task couldn't be created
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__TASK_NOT_CREATED__', 'tasklist'),
                         oae.api.i18n.translate('__MSG__TASK_CREATE_FAILED__', 'tasklist'),
@@ -71,6 +106,7 @@ define(['jquery', 'oae.core'], function($, oae) {
                     renderTaskList(data.tasks);
                 },
                 'error': function() {
+                    // Show a failure notification when the task list couldn't be retrieved
                     oae.api.util.notification(
                         oae.api.i18n.translate('__MSG__TASKS_NOT_RETRIEVED__', 'tasklist'),
                         oae.api.i18n.translate('__MSG__TASKS_RETRIEVE_FAILED__', 'tasklist'),
@@ -84,7 +120,10 @@ define(['jquery', 'oae.core'], function($, oae) {
          * Bind to various elements in the widget
          */
         var addBinding = function() {
+            // Bind to the `submit` event of the form to create a new task
             $rootel.on('submit', '#tasklist-task-form', createTask);
+            // Bind to the `click` event of the delete task button to delete a task
+            $rootel.on('click', '.tasklist-task-delete', deleteTask);
         };
 
         /**
