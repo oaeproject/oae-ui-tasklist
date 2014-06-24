@@ -1,6 +1,8 @@
 {
     "i18n": {
-        "default": "bundles/default.properties"
+        "de_DE": "bundles/de_DE.properties",
+        "default": "bundles/default.properties",
+        "es_ES": "bundles/es_ES.properties"
     },
     "src": "tasklist.html"
 }
